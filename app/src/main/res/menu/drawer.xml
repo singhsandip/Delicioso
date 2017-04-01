@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_about"
+            android:checked="false"
+            android:icon="@drawable/about"
+            android:title="@string/navigation_item_1" />
+
+        <item
+            android:id="@+id/nav_products"
+            android:checked="false"
+            android:icon="@drawable/products"
+            android:title="@string/navigation_item_2" />
+
+        <item
+            android:id="@+id/nav_special"
+            android:checked="false"
+            android:icon="@drawable/special"
+            android:title="@string/navigation_item_3" />
+
+
+        <item
+            android:id="@+id/nav_comp"
+            android:checked="false"
+            android:icon="@drawable/complaint"
+            android:title="@string/navigation_item_6" />
+        <item
+            android:id="@+id/nav_feedback"
+            android:checked="false"
+            android:icon="@drawable/complaint"
+            android:title="@string/navigation_item_7" />
+
+    </group>
+
+</menu>
