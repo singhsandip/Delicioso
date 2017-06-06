@@ -3,6 +3,13 @@
 
     <group android:checkableBehavior="single">
 
+
+        <item
+            android:id="@+id/nav_home"
+            android:checked="false"
+            android:icon="@drawable/home_48"
+            android:title="Home" />
+
         <item
             android:id="@+id/nav_about"
             android:checked="false"
@@ -15,11 +22,6 @@
             android:icon="@drawable/products"
             android:title="@string/navigation_item_2" />
 
-        <item
-            android:id="@+id/nav_special"
-            android:checked="false"
-            android:icon="@drawable/special"
-            android:title="@string/navigation_item_3" />
 
 
         <item
@@ -32,6 +34,18 @@
             android:checked="false"
             android:icon="@drawable/complaint"
             android:title="@string/navigation_item_7" />
+
+        <item
+            android:id="@+id/nav_contactus"
+            android:checked="false"
+            android:icon="@drawable/phone_50"
+            android:title="Contact Us" />
+
+        <item
+            android:id="@+id/find_us"
+            android:checked="false"
+            android:icon="@drawable/map_marker_50"
+            android:title="Find Us" />
 
     </group>
 

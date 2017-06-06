@@ -9,17 +9,18 @@
     android:layout_height="match_parent"
     >
 
-    <TextView
+    <com.example.sandeep.myapplication.Helper.CustomText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Deliciose"
         android:textSize="25dp"
         android:layout_gravity="center"/>
-    <TextView
+    <com.example.sandeep.myapplication.Helper.CustomText
         android:layout_marginTop="@dimen/side_margirn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/about_us"
+        android:lineSpacingMultiplier="2"
         android:textSize="25dp"
         android:padding="10dp"
         android:layout_margin="10dp"/>

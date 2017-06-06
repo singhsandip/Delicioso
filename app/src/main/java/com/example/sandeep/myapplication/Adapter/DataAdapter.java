@@ -1,6 +1,7 @@
 package com.example.sandeep.myapplication.Adapter;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.sandeep.myapplication.Fragments.Image_Fragment;
+import com.example.sandeep.myapplication.Helper.Constants;
+import com.example.sandeep.myapplication.Models.Get_Products;
 import com.example.sandeep.myapplication.Models.MyModel;
+import com.example.sandeep.myapplication.Models.Product_Result;
 import com.example.sandeep.myapplication.R;
 
 import java.util.List;
@@ -34,14 +41,15 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
   android.app.FragmentManager fragmentManager ;//= getFragmentManager();
     android.app.FragmentTransaction ft;
 
-    List<MyModel> list;
+    List<Product_Result> list;
+    ProgressDialog progressDialog;
     LayoutInflater inflater;
     String description;
     String price;
     String name;
     String image_url;
 
-    public DataAdapter(Activity activity, List<MyModel> list) {
+    public DataAdapter(Activity activity, List<Product_Result> list) {
         this.activity = activity;
         this.fragmentManager = activity.getFragmentManager();
         this.list = list;
@@ -56,6 +64,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     {
         View view;
         view = inflater.inflate(R.layout.product_layout,parent,false);
+        progressDialog = new ProgressDialog(activity);
         //String type = "type";
         //int a = (int)view;
         String type = String.valueOf(view);
@@ -72,7 +81,11 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             //String description = list.get(position).getDescription();
             findViewHolder.textView.setText(list.get(position).getName());
-            Glide.with(activity).load(list.get(position).getImage()).into(findViewHolder.imageView);
+           // progressDialog.show();
+            Glide.with(activity)
+                    .load(list.get(position)
+                    .getImage())
+                    .into(findViewHolder.imageView);
         }
     }
 
@@ -100,20 +113,23 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 @Override
                 public void onClick(View v) {
                     //MyModel myModel = new MyModel();
-                    description = list.get(getAdapterPosition()).getDescription();
-                    price = list.get(getAdapterPosition()).getPrice();
+                  //  description = list.get(getAdapterPosition()).getDescription();
+                    //price = list.get(getAdapterPosition()).getPrice();
                     name = list.get(getAdapterPosition()).getName();
                     image_url = list.get(getAdapterPosition()).getImage();
                     ft = fragmentManager.beginTransaction();
                     Image_Fragment image_fragment = new Image_Fragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.TYPE,getAdapterPosition());
+                    image_fragment.setArguments(bundle);
                     //ft.add(R.id.frame_image,image_fragment);
-                    Bundle b = new Bundle();
+                   /* Bundle b = new Bundle();
                     b.putString("name",name);
                     b.putString("description",description);
                     b.putString("price",price);
                     b.putString("image",image_url);
                     image_fragment.setArguments(b);
-                    ft.addToBackStack("products");
+                    ft.addToBackStack("products");*/
                     //ft.add(R.id.frame,image_fragment);
                     ft.replace(R.id.frame,image_fragment);
                     ft.commit();

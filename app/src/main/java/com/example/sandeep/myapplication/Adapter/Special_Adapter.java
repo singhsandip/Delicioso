@@ -54,7 +54,7 @@ public class Special_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        //FindViewHolder findViewHolder = (FindViewHolder) holder;
+        //AdapterViewHolder findViewHolder = (AdapterViewHolder) holder;
         if (holder instanceof FindViewHolderSpecial)
         {
             FindViewHolderSpecial findViewHolderSpecial = (FindViewHolderSpecial) holder;

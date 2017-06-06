@@ -2,7 +2,9 @@
 
 
     <string name="app_name">Delicioso</string>
-    <string name="about_us">Delicioso is ......</string>
+    <string name="this_is_main">This  is  main content fragment......</string>
+    <string name="about_us">Delicioso is Sweet Shop Established in 2002 By Kapoor And Sons.
+    Its Famous For The Taste And Quality Of Products Provided With Fair Prices Range</string>
     <string name="sgggestion_error">Please Enter Your Feedbacks And Suggestions</string>
     <string name="name_error">Please Enter Name</string>
     <string name="emai_error">Enter A Valid Email</string>
@@ -25,4 +27,5 @@
     <string name="spam_string">Spams</string>
     <string name="closeDrawer">Navigation View</string>
     <string name="openDrawer">Navigation View Closed</string>
+    <string name="api_key">AIzaSyAkeUehLxm_MqwQ4U8QTU0733sttKDlyks</string>
 </resources>

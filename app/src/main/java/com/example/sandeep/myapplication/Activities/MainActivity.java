@@ -1,11 +1,16 @@
 package com.example.sandeep.myapplication.Activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,14 +33,14 @@ import android.widget.Toast;
 import com.example.sandeep.myapplication.Fragments.About_us;
 import com.example.sandeep.myapplication.Fragments.Complaints;
 import com.example.sandeep.myapplication.Fragments.Feedback;
+import com.example.sandeep.myapplication.Fragments.Fragment_Main;
 import com.example.sandeep.myapplication.Fragments.Products;
 import com.example.sandeep.myapplication.Fragments.Specilites;
 import com.example.sandeep.myapplication.R;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     //ImageView main;
-    EditText cname,cemail,cdetails;
+    EditText cname, cemail, cdetails;
     Button b1;
     TextView t;
     android.app.FragmentManager fragmentManager = getFragmentManager();
@@ -52,9 +57,7 @@ public class MainActivity extends AppCompatActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-
-
-            setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
 
         if (!isNetworkAvailable()) {
@@ -81,47 +84,51 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
-            t = (TextView) findViewById(R.id.name);
-            cname = (EditText) findViewById(R.id.c_name);
-            cemail = (EditText) findViewById(R.id.c_email);
-            cdetails = (EditText) findViewById(R.id.c_details);
-            b1 = (Button) findViewById(R.id.button3);
-
+        t = (TextView) findViewById(R.id.name);
+        cname = (EditText) findViewById(R.id.c_name);
+        cemail = (EditText) findViewById(R.id.c_email);
+        cdetails = (EditText) findViewById(R.id.c_details);
+        b1 = (Button) findViewById(R.id.button3);
 
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-            navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        addMainFragment();
 
-            toolbar.setTitle("Delicioso");
+        toolbar.setTitle("Delicioso");
 
-            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuitem) {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuitem) {
 
 
-                    switch (menuitem.getItemId()) {
-                        case R.id.nav_about:
-                            ft = fragmentManager.beginTransaction();
-                            About_us frgmnt = new About_us();
-                            ft.addToBackStack(String.valueOf(frgmnt));
-                            ft.replace(R.id.frame, frgmnt);
-                            ft.commit();
-                            toolbar.setTitle("About Us");
-                            break;
+                switch (menuitem.getItemId()) {
 
-                        case R.id.nav_products:
-                            ft = fragmentManager.beginTransaction();
-                            Products products_fragment = new Products();
-                            ft.addToBackStack("product");
-                            ft.replace(R.id.frame, products_fragment);
-                            ft.commit();
-                            toolbar.setTitle("Products");
-                            break;
+                    case R.id.nav_home:
+                        addMainFragment();
+                        break;
 
-                        case R.id.nav_special:
+                    case R.id.nav_about:
+                        ft = fragmentManager.beginTransaction();
+                        About_us about_us = new About_us();
+                        ft.addToBackStack(String.valueOf(about_us));
+                        ft.replace(R.id.frame, about_us);
+                        ft.commit();
+                        toolbar.setTitle("About Us");
+                        break;
+
+                    case R.id.nav_products:
+                        ft = fragmentManager.beginTransaction();
+                        Products products_fragment = new Products();
+                        ft.addToBackStack("product");
+                        ft.replace(R.id.frame, products_fragment);
+                        ft.commit();
+                        toolbar.setTitle("Products");
+                        break;
+
+                       /* case R.id.nav_special:
                             //Toast.makeText(getApplicationContext(),"Specility Selected",Toast.LENGTH_SHORT).show();
                             ft = fragmentManager.beginTransaction();
                             Specilites specilities_fragment = new Specilites();
@@ -129,25 +136,59 @@ public class MainActivity extends AppCompatActivity
                             ft.replace(R.id.frame, specilities_fragment);
                             ft.commit();
                             toolbar.setTitle("Our Specilities");
-                            break;
+                            break;*/
 
-                        case R.id.nav_comp:
-                            ft = fragmentManager.beginTransaction();
-                            Complaints complaints_fragment = new Complaints();
-                            ft.addToBackStack("complaints");
-                            ft.replace(R.id.frame, complaints_fragment);
-                            ft.commit();
-                            toolbar.setTitle("Complaints");
-                            break;
+                    case R.id.nav_comp:
+                        ft = fragmentManager.beginTransaction();
+                        Complaints complaints_fragment = new Complaints();
+                        ft.addToBackStack("complaints");
+                        ft.replace(R.id.frame, complaints_fragment);
+                        ft.commit();
+                        toolbar.setTitle("Complaints");
+                        break;
 
-                        case R.id.nav_feedback:
+                    case R.id.nav_feedback:
+                        //  Toast.makeText(getApplicationContext(),"feedback Selected",Toast.LENGTH_SHORT).show();
+                        ft = fragmentManager.beginTransaction();
+                        Feedback feedback_fragment = new Feedback();
+                        ft.addToBackStack("feedback");
+                        ft.replace(R.id.frame, feedback_fragment);
+                        ft.commit();
+                        toolbar.setTitle("Feedback & Suggestions");
+                        break;
+
+                    case R.id.nav_contactus:
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        intent.setData(Uri.parse("tel:" + "8968723819"));
+                        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            //return TODO;
+                        }
+                        startActivity(intent);
                             //  Toast.makeText(getApplicationContext(),"feedback Selected",Toast.LENGTH_SHORT).show();
-                            ft = fragmentManager.beginTransaction();
+                          /*  ft = fragmentManager.beginTransaction();
                             Feedback feedback_fragment = new Feedback();
                             ft.addToBackStack("feedback");
                             ft.replace(R.id.frame, feedback_fragment);
                             ft.commit();
-                            toolbar.setTitle("Feedback & Suggestions");
+                            toolbar.setTitle("Feedback & Suggestions");*/
+                            break;
+
+                        case R.id.find_us:
+                            startActivity(new Intent(MainActivity.this,Find_Us.class));
+                            //  Toast.makeText(getApplicationContext(),"feedback Selected",Toast.LENGTH_SHORT).show();
+                            /*ft = fragmentManager.beginTransaction();
+                            Feedback feedback_fragment = new Feedback();
+                            ft.addToBackStack("feedback");
+                            ft.replace(R.id.frame, feedback_fragment);
+                            ft.commit();
+                            toolbar.setTitle("Feedback & Suggestions");*/
                             break;
 
                         default:
@@ -184,6 +225,13 @@ public class MainActivity extends AppCompatActivity
             actionBarDrawerToggle.syncState();
 
 
+    }
+
+    private void addMainFragment()
+    {
+        ft = fragmentManager.beginTransaction();
+        ft.add(R.id.frame,new Fragment_Main(),null);
+        ft.commit();
     }
 
     @Override

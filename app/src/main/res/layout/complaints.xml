@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/top_margirn">
 
-                <EditText
+                <AutoCompleteTextView
                     android:singleLine="true"
                     android:hint="Enter Email"
                     android:layout_marginLeft="@dimen/side_margirn"

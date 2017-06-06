@@ -3,12 +3,14 @@ package com.example.sandeep.myapplication.Fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +19,8 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.example.sandeep.myapplication.Activities.MainActivity;
 import com.example.sandeep.myapplication.BackgroundWork.BackgroundWorker;
+import com.example.sandeep.myapplication.Helper.CustomFilterAdapter;
+import com.example.sandeep.myapplication.Helper.ProgressDialogHelper;
 import com.example.sandeep.myapplication.Interface.Add_Feedback;
 import com.example.sandeep.myapplication.Interface.Get_Jason_Data;
 import com.example.sandeep.myapplication.R;
@@ -24,6 +28,8 @@ import com.example.sandeep.myapplication.R;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -37,9 +43,10 @@ import retrofit.client.Response;
 public class Feedback extends Fragment implements View.OnClickListener//,Get_Jason_Data
 {
     AlertDialog alertDialog;
-
+    ProgressDialog progressDialog;
     Button submit;
-    EditText e1,e2,e3;
+    AutoCompleteTextView email;
+    EditText e1,e3;
     Activity mActivity;
     //Get_Jason_Data get_jason_data;
     private AwesomeValidation awesomeValidation;
@@ -59,9 +66,23 @@ public class Feedback extends Fragment implements View.OnClickListener//,Get_Jas
         super.onViewCreated(view, savedInstanceState);
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         e1 = (EditText)view.findViewById(R.id.f_name);
-        e2 = (EditText)view.findViewById(R.id.f_email);
+        email = (AutoCompleteTextView) view.findViewById(R.id.f_email);
         e3 = (EditText)view.findViewById(R.id.f_details);
+        progressDialog = ProgressDialogHelper.getProgressDialog(mActivity);
         submit = (Button)view.findViewById(R.id.button3);
+
+        List<String> arraymails = new ArrayList<>();
+        arraymails = new ArrayList();
+        arraymails.add("@gmail.com");
+        arraymails.add("@hotmail.com");
+        arraymails.add("@yahoo.com");
+        arraymails.add("@outlook.com");
+
+        //  autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.autocmptext);
+
+        CustomFilterAdapter adapter = new CustomFilterAdapter(mActivity,android.R.layout.simple_list_item_1, (ArrayList<String>) arraymails);
+
+        email.setAdapter(adapter);
         submit.setOnClickListener(this);
 
       // awesomeValidation.addValidation(mActivity,R.id.c_name,"^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$",R.string.name_error);
@@ -81,9 +102,13 @@ public class Feedback extends Fragment implements View.OnClickListener//,Get_Jas
         {
             String n,e,add;
             n = e1.getText().toString();
-            e = e2.getText().toString();
+            e = email.getText().toString();
             add = e3.getText().toString();
             sendpost(n,e,add);
+            progressDialog.setMessage("Adding Feedback");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
         }
 
     }
@@ -111,9 +136,12 @@ public class Feedback extends Fragment implements View.OnClickListener//,Get_Jas
                     e.printStackTrace();
                 }
                 alertDialog = new AlertDialog.Builder(mActivity).create();
-                alertDialog.setTitle("Add Complaits Status");
-                alertDialog.setMessage(output);
+                alertDialog.setTitle("Add Feedback Status");
+                alertDialog.setMessage("Feedback "+output);
                 alertDialog.show();
+                e1.setText(null);
+                email.setText(null);
+                e3.setText(null);
 
                // Toast.makeText(mActivity, ""+output, Toast.LENGTH_SHORT).show();
             }
@@ -122,6 +150,7 @@ public class Feedback extends Fragment implements View.OnClickListener//,Get_Jas
             public void failure(RetrofitError error)
             {
                 Toast.makeText(mActivity, "error while inserting", Toast.LENGTH_SHORT).show();
+
 
             }
         });

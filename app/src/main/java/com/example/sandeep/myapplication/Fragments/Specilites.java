@@ -2,6 +2,7 @@ package com.example.sandeep.myapplication.Fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,11 +22,6 @@ import com.example.sandeep.myapplication.Interface.RequestInterface;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by sandeep on 07-02-2017.
@@ -34,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Specilites extends Fragment implements Get_Jason_Data
 {
    // List<MyModel> list;
+   ProgressDialog progressDialog;
     RecyclerView recyclerView;
     Activity activity;
     ArrayList<MyModel> list;
@@ -46,6 +43,7 @@ public class Specilites extends Fragment implements Get_Jason_Data
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         activity = getActivity();
+        progressDialog = new ProgressDialog(activity);
         specialAdapter = new Special_Adapter(activity,new ArrayList<MyModel>());
         //get_jason_data = this;
         View view = inflater.inflate(R.layout.specilities,container,false);
@@ -59,14 +57,16 @@ public class Specilites extends Fragment implements Get_Jason_Data
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        getJSON();
+        //getJSON();
+        progressDialog.setMessage("getting products");
+        progressDialog.show();
         //String type = "special";
         //super.onViewCreated(view, savedInstanceState);
         //BackgroundWorker backgroundWorker = new BackgroundWorker(activity,get_jason_data);
        // backgroundWorker.execute(type);
     }
 
-    private void getJSON()
+   /* private void getJSON()
     {
         //Retrofit retrofit = new Retrofit.Builder();
         Retrofit retrofit = new Retrofit.Builder()
@@ -85,6 +85,7 @@ public class Specilites extends Fragment implements Get_Jason_Data
                     //specialAdapter = new Special_Adapter(activity,list);
                     specialAdapter.addList(list);
                     recyclerView.setAdapter(specialAdapter);
+                    progressDialog.dismiss();
                 }
             }
 
@@ -96,7 +97,7 @@ public class Specilites extends Fragment implements Get_Jason_Data
             }
         });
     }
-
+*/
     @Override
     public String sendJasonData(String result)  {
         String s = result;
